@@ -13,8 +13,7 @@ class PersonListView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        name = self.request.query_params.get('name', None) 
-        print ('5') # Get the 'name' parameter from the request
+        name = self.request.query_params.get('name', None)  # Get the 'name' parameter from the request
         if name is not None:
             queryset = queryset.filter(name__icontains=name)  # Perform case-insensitive partial matching on the 'name' field
         return queryset
