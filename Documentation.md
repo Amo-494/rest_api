@@ -121,7 +121,7 @@ HTTP/1.1 201 Created
   "age": 28
 }
 
-List People by Name
+List People by Name 
 Request:
 
 GET /api/people/?name=John
@@ -142,11 +142,12 @@ HTTP/1.1 200 OK
 ]
 
 Limitations and Assumptions
+Was a bit difficult to implement 'GET' requests via url. 
 
 Setup and Deployment
-To set up and deploy the API locally or on a server, follow these steps:
+To set up and deploy the API locally or on a server, follow these steps:**
 
-Clone the repository from GitHub:
+Clone the repository from GitHub:*
 
 git clone https://github.com/Amo-494/rest_api
 Navigate to the project directory:
@@ -170,3 +171,38 @@ Access the API at http://localhost:8000/api/people/
 
 Test with Postman and the browser and host with ngrok.
 
+
++--------------------------+           +--------------------------+
+|       <<Model>>         |           |       <<Serializer>>     |
+|        Person            |           |     PersonSerializer      |
++--------------------------+           +--------------------------+
+| - id: IntegerField       |           | - model: Person           |
+| - name: CharField        |           | - fields: list            |
+| - age: IntegerField      |           |   - name                   |
+|                          |           |   - age                    |
+|                          |           |                            |
+| + __str__(): str         |           | + validate_name(value)   |
+|                          |           | + validate_age(value)    |
+|                          |           |                            |
++--------------------------+           +--------------------------+
+            |                                   |
+            |                                   |
+            |                                   |
++--------------------------+           +--------------------------+
+|       <<View>>          |           |       <<View>>            |
+|   PersonCreateView      |           |   PersonRetrieveUpdate-   |
+|                        |           |   DestroyView              |
++--------------------------+           +--------------------------+
+| - queryset: Person     |           | - queryset: Person        |
+| - serializer_class:     |           | - serializer_class:       |
+|   PersonSerializer      |           |   PersonSerializer        |
+|                        |           |                            |
+|                        |           |                            |
++--------------------------+           +--------------------------+
+            |                                   |
+            |                                   |
+            |                                   |
++--------------------------+           +--------------------------+
+|       <<URL Pattern>>   |           |       <<URL Pattern>>     |
+|   '/api/people/'       |           |   '/api/people/<int:pk>/' |
++--------------------------+           +--------------------------+
