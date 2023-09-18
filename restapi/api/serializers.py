@@ -9,12 +9,19 @@ class PersonSerializer(serializers.ModelSerializer):
         model = Person
         fields = '__all__'
 
+    # def validate_name(self, value):
+    #     # Check if the "name" field is a string
+    #     if not isinstance(value, str):
+    #         raise serializers.ValidationError("Name must be a string.")
+    #     return value
     def validate_name(self, value):
-        # Check if the "name" field is a string
-        if not isinstance(value, str):
-            raise serializers.ValidationError("Name must be a string.")
-        return value
+        # Check if a person with the same name already exists
+        existing_person = Person.objects.filter(name=value).first()
 
+        if existing_person:
+            raise serializers.ValidationError("A person with this name already exists.")
+
+        return value   
     def validate_age(self, value):
         # Check if the "age" field is an integer
         if not isinstance(value, int):
